@@ -1,0 +1,40 @@
+#!/bin/bash
+#Paroolide genereerimine ja logimine
+
+if [ $# -ne 1 ];
+
+ then
+
+	echo "Kasutusjuhend: $0 kasutajanimi"
+
+else
+
+	nimed=$1
+
+	if [ -f $nimed -a -r $nimed ] ; then
+
+	echo "kasutaja fail on korras"
+
+	for rida in $(cat $nimed)
+
+	do
+
+	parool=$(pwgen -1 -s 12)
+
+	kasutajanimi=$(echo "$rida")
+
+	useradd $kasutajanimi -m -s /bin/bash
+
+	echo "$kasutajanimi:$parool" | chpasswd
+
+	echo "$kasutajanimi:$parool" >> ~/bash_skriptimine/praks1/log
+
+	done
+
+	else
+
+	echo "probleem failiga $nimed"
+
+	fi
+
+fi
